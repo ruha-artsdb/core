@@ -1,0 +1,122 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model WeatherViewModel
+
+@{
+    ViewData["Title"] = "Weather";
+    bool isHot = Model.Weather.Main.Temperature > 293.15;
+    bool isWarm =Model.Weather.Main.Temperature < 293.15 && Model.Weather.Main.Temperature > 273.15;
+    bool isCold =Model.Weather.Main.Temperature < 273.15;
+    string hotWarmCold = null;
+    string isclouds = "";
+    string isclouds1 = "";
+    if (Model.Weather.Weather[0].Id > 800 && Model.Weather.Weather[0].Id < 805)
+    {
+        isclouds = "cloud";
+        isclouds1 = "cloudx";
+    };
+
+    string isSun = "";
+    string isSun1 = "";
+    if (Model.Weather.Weather[0].Id >= 500 && Model.Weather.Weather[0].Id < 505 ||
+        Model.Weather.Weather[0].Id >= 800 && Model.Weather.Weather[0].Id < 802)
+    {
+        isSun = "sun";
+        isSun1 = "sunx";
+
+    };
+    bool isSnow = false;
+
+    if ( Model.Weather.Weather[0].Id >= 600 && Model.Weather.Weather[0].Id < 622)
+    {
+        isSnow = true;
+    }
+    bool isRain =Model.Weather.Weather[0].Id >= 500 && Model.Weather.Weather[0].Id < 532;
+    string rain = "";
+    if (isRain)
+    {
+        rain = "rain";
+    }
+    string isThunder = "";
+    if (Model.Weather.Weather[0].Id >= 200 && Model.Weather.Weather[0].Id < 233){
+        isThunder = "cloudr";
+    }
+
+    if (isHot)
+    {
+        hotWarmCold = "hot";
+
+    }
+    else if (isWarm)
+    {
+        hotWarmCold = "cloudy";
+
+    }
+    else if (isCold)
+    {
+        hotWarmCold = "stormy";
+
+    }
+
+}
+@functions {
+
+    public string fromKtoC(double temp)
+    {
+        return (temp - 273.15).ToString("N1") + "°C";
+    }
+}
+
+<p>Current weather in Trondheim</p>
+<p>Temprature: @fromKtoC(@Model.Weather.Main.Temperature)</p>
+<p>Wind degree: @Model.Weather.Wind.Deg°</p>
+<p>Wind speed: @Model.Weather.Wind.Speed m/s</p>
+<p>Description: @Model.Weather.Weather[0].Description</p>
+
+
+<div class="weather-container">
+
+    <div class="@hotWarmCold weather-container rain">
+        @if (isSnow && isCold)
+        {
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        }
+        <span class="@isSun"></span>
+        <span class="@isclouds"></span>
+        <span class="@isclouds1"></span>
+        <span class="@isSun1"></span>
+        @if (isCold)
+        {
+            <span class="snowe"></span>
+            <span class="snowex"></span>
+            <span class="stick"></span>
+            <span class="stick2"></span>
+
+        }
+        @if (isRain)
+        {
+
+            <ul>
+
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        }
+        <span class="@isThunder"></span>
+
+    </div>
+</div>
