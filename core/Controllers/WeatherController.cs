@@ -33,8 +33,6 @@ namespace core.Controllers
             string query = $"https://api.openweathermap.org/data/2.5/weather?q=trondheim&appid={key}&units=metric";
             WeatherResponse results = weatherService.GetWeatherData(query).Result;
             
-            
-
             var viewModel = new WeatherViewModel {Weather = results };
             return View(viewModel);
 
