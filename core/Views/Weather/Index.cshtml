@@ -6,12 +6,25 @@
 
 @{
     ViewData["Title"] = "Weather";
-    bool isHot = Model.Weather.Main.Temperature > 293.15;
-    bool isWarm =Model.Weather.Main.Temperature < 293.15 && Model.Weather.Main.Temperature > 273.15;
-    bool isCold =Model.Weather.Main.Temperature < 273.15;
+    bool isHot = Model.Weather.Main.Temperature > 20;
+    bool isWarm =Model.Weather.Main.Temperature < 20 && Model.Weather.Main.Temperature > 0;
+    bool isCold =Model.Weather.Main.Temperature < 0;
     string hotWarmCold = null;
     string isclouds = "";
     string isclouds1 = "";
+
+    bool isDay = Model.Weather.Weather[0].Icon.EndsWith("d");
+    string moon = "";
+    string spot1 = "";
+    string spot2 = "";
+    if (!isDay)
+    {
+        moon = "moon";
+        spot1 = "spot1";
+        spot2 = "spot2";
+    }
+
+
     if (Model.Weather.Weather[0].Id > 800 && Model.Weather.Weather[0].Id < 805)
     {
         isclouds = "cloud";
@@ -20,8 +33,8 @@
 
     string isSun = "";
     string isSun1 = "";
-    if (Model.Weather.Weather[0].Id >= 500 && Model.Weather.Weather[0].Id < 505 ||
-        Model.Weather.Weather[0].Id >= 800 && Model.Weather.Weather[0].Id < 802)
+    if ((Model.Weather.Weather[0].Id >= 500 && Model.Weather.Weather[0].Id < 505 ||
+        Model.Weather.Weather[0].Id >= 800 && Model.Weather.Weather[0].Id < 802) && isDay)
     {
         isSun = "sun";
         isSun1 = "sunx";
@@ -43,80 +56,109 @@
     if (Model.Weather.Weather[0].Id >= 200 && Model.Weather.Weather[0].Id < 233){
         isThunder = "cloudr";
     }
-
-    if (isHot)
+    if (isDay)
     {
-        hotWarmCold = "hot";
+        if (isHot)
+        {
+            hotWarmCold = "hot";
 
-    }
-    else if (isWarm)
-    {
-        hotWarmCold = "cloudy";
+        }
+        else if (isWarm)
+        {
+            hotWarmCold = "cloudy";
 
-    }
-    else if (isCold)
+        }
+        else if (isCold)
+        {
+            hotWarmCold = "stormy";
+
+        }
+    } else
     {
-        hotWarmCold = "stormy";
+        hotWarmCold = "night";
 
     }
 
 }
 @functions {
 
-    public string fromKtoC(double temp)
-    {
-        return (temp - 273.15).ToString("N1") + "°C";
-    }
+   
+   
 }
 
-<p>Current weather in Trondheim</p>
-<p>Temprature: @fromKtoC(@Model.Weather.Main.Temperature)</p>
-<p>Wind degree: @Model.Weather.Wind.Deg°</p>
-<p>Wind speed: @Model.Weather.Wind.Speed m/s</p>
-<p>Description: @Model.Weather.Weather[0].Description</p>
 
 
-<div class="weather-container">
 
-    <div class="@hotWarmCold weather-container @rain">
-        @if (isSnow && isCold)
-        {
-            <ul>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-        }
-        <span class="@isSun"></span>
-        <span class="@isclouds"></span>
-        <span class="@isclouds1"></span>
-        <span class="@isSun1"></span>
-        @if (isCold)
-        {
-            <span class="snowe"></span>
-            <span class="snowex"></span>
-            <span class="stick"></span>
-            <span class="stick2"></span>
-
-        }
-        @if (isRain)
-        {
-
-            <ul>
-
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
-            </ul>
-        }
-        <span class="@isThunder"></span>
-
+<div class="display-flex">
+    <div>
+        <p>Current weather in Trondheim</p>
+        <p>Temprature: @Model.Weather.Main.Temperature</p>
+        <p>Wind degree: @Model.Weather.Wind.Deg°</p>
+        <p>Wind speed: @Model.Weather.Wind.Speed m/s</p>
+        <p>Description: @Model.Weather.Weather[0].Description</p>
     </div>
+
+
+    <div class="weather-container">
+
+        <div class="@hotWarmCold weather-container @rain">
+            @if (isSnow && isCold)
+            {
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            }
+            <span class="@isSun @moon"></span>
+            <span class="@isclouds "></span>
+            <span class="@spot1"></span>
+            <span class="@spot2"></span>
+            <span class="@isclouds1"></span>
+            <span class="@isSun1"></span>
+            @if (isCold)
+            {
+                <span class="snowe"></span>
+                <span class="snowex"></span>
+                <span class="stick"></span>
+                <span class="stick2"></span>
+
+            }
+            @if (isRain)
+            {
+
+                <ul>
+
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            }
+            @if (!isDay)
+            {
+            <ul>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+
+            }
+            <span class="@isThunder"></span>
+
+        </div>
+    </div>
+
+</div>
+<div class="display-flex">
+    <img alt="Trondheim" src="https://images-webcams.windy.com/32/1526640732/current/preview/1526640732.jpg" width="400" height="224">
+    <img alt="Midtbyen" src="https://images-webcams.windy.com/29/1525786829/current/preview/1525786829.jpg" width="400" height="224">
 </div>

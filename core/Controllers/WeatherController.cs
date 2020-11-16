@@ -16,12 +16,12 @@ namespace core.Controllers
     [ApiController]
     public class WeatherController : Controller
     {
-        public WeatherService _ws = new WeatherService();
+        public WeatherService weatherService = new WeatherService();
         
         public IActionResult Index()
         {
-            string query = "https://api.openweathermap.org/data/2.5/weather?q=trondheim&appid=0442feadee67c41faa51ec591951bc61";
-            WeatherResponse results = _ws.GetWeatherData(query).Result;
+            string query = "https://api.openweathermap.org/data/2.5/weather?q=trondheim&appid=0442feadee67c41faa51ec591951bc61&units=metric";
+            WeatherResponse results = weatherService.GetWeatherData(query).Result;
 
             var viewModel = new WeatherViewModel {Weather = results };
             return View(viewModel);
@@ -38,5 +38,6 @@ namespace core.Controllers
 
 
         }
+
     }
 }
