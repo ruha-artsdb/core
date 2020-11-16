@@ -29,7 +29,7 @@ namespace core.Controllers
 
         public IActionResult Index()
         {
-            string key = _configuration["weather"];
+            string key = "0442feadee67c41faa51ec591951bc61"; //_configuration["weather"];
             string query = $"https://api.openweathermap.org/data/2.5/weather?q=trondheim&appid={key}&units=metric";
             WeatherResponse results = weatherService.GetWeatherData(query).Result;
             
