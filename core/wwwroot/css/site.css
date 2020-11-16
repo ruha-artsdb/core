@@ -9,7 +9,8 @@ a.navbar-brand {
 
 /* Provide sufficient contrast against white background */
 a {
-  color: #007aff;
+    color: #007aff;
+    text-shadow: 1px 1px 30px rgb(255, 255, 255);
 }
 
 .btn-primary {
@@ -36,6 +37,9 @@ html {
 }
 .display-flex{
     display:flex;
+}
+.flex-col{
+    flex-direction:column
 }
 
 .border-top {
