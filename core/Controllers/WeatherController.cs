@@ -8,6 +8,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using core.Models;
 using core.Services;
+using Microsoft.Extensions.Configuration;
 
 
 namespace core.Controllers
@@ -16,24 +17,27 @@ namespace core.Controllers
     [ApiController]
     public class WeatherController : Controller
     {
+
+        private static IConfiguration _configuration;
+
         public WeatherService weatherService = new WeatherService();
-        
+
+        public WeatherController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public IActionResult Index()
         {
-            string query = "https://api.openweathermap.org/data/2.5/weather?q=trondheim&appid=0442feadee67c41faa51ec591951bc61&units=metric";
+            string key = _configuration["weather"];
+            string query = $"https://api.openweathermap.org/data/2.5/weather?q=trondheim&appid={key}&units=metric";
             WeatherResponse results = weatherService.GetWeatherData(query).Result;
+            
+            
 
             var viewModel = new WeatherViewModel {Weather = results };
             return View(viewModel);
 
-
-            //client.BaseAddress = new Uri("http://api.openweathermap.org");
-            //var response = await client.GetAsync($"/data/2.5/weather?q=trondheim&appid=0442feadee67c41faa51ec591951bc61");
-            //response.EnsureSuccessStatusCode();
-
-            //var stringResult = await response.Content.ReadAsStringAsync();
-            //var viewModel = new WeatherViewModel {Weather = response };
-            //return View(viewModel);
 
 
 

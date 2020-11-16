@@ -5,6 +5,7 @@
 @model WeatherViewModel
 
 @{
+
     ViewData["Title"] = "Weather";
     bool isHot = Model.Weather.Main.Temperature > 20;
     bool isWarm =Model.Weather.Main.Temperature < 20 && Model.Weather.Main.Temperature > 0;
